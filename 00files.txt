@@ -1,0 +1,17 @@
+
+ADFsimulation.m:              Main class for executing simulations
+AdaptiveFilter.m:             Base class of adaptive filter
+GMNLMS.m:                     The NLMS algorithm using GMM
+GMRLS.m:                      The RLS algorithm using GMM
+GMRLSDCD.m:                   The RLD-DCD algorithm using GMM
+GSNLMS.m:                     The NLMS algorithm using single Gauss model
+LMS.m:                        The standard LMS algorithm
+NLMS.m:                       The normalized LMS algorithm
+RLS.m:                        The RLS algorithm
+RLSDCD.m:                     The RLS DCD algorithm
+SystemBaseLinear.m:           An example of linear time-invariant system model (AWGN channel)
+SystemImpulseNoise.m:         An example of linear time-varying system (AWGN + impulsive noise channel)
+SystemTVS.m:                  An example of linear time-varying system (AWGN channel)
+VGMM.m:                       The class for implementing GMM functionality (vectorized)
+VGSM.m:                       The class for implementing single Gauss model (vectorized)
+s1.m:                         Simple example of .m file to excute simulation

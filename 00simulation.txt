@@ -1,0 +1,20 @@
+How to execute simulations
+
+1. Select adaptive algorithm
+   Sample implementaion of the LMS, NLMS, RLS, and RLS-DCE algorithms are provided
+
+2. Generate an object of the algorithm:
+     e.g., nlms = NLMS(filterorder)
+
+
+3. Select channel model  + input-output signals (e.g.: SystemBaseLinear)
+     For using SystemBaseLinear.m, coefficients of the unknown system is needed.
+     e.g.,  SystemBaseLinear(unknownsystem)
+
+4. Generate simulation object
+     e.g.,  s = ADFsimulation(algorithms)
+
+5. Execusion
+     e.g., s.simulation()
+     At the end of simulation, two figures are popuped, MSE, and MSD characteristics.
+
