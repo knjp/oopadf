@@ -1,7 +1,29 @@
-
-* Algorithm using Gaussian model
+* Algorithms using Gaussian model
    GSNLMS.m: using single Gaussian model for each coefficients (NLMS algorithm)
    GMNLMS.m: using Gaussian mixture model for each coefficients (NLMS algorithm)
    GMRLS.m: using Gaussian mixture model for each coefficients (RLS algorithm)
    GMRLSDCD.m: using Gaussian mixture model for each coefficients (RLS-DCD algorithm)
+
+In GSNLMS, each coefficient of the adaptive filter is modeled as a sigle Gaussian.
+Each coefficient has three parameters to update its Gaussian model.
+
+Namely,
+   forgetmu:   \delta_m in the equation (11) of the ISCAS 2019 paper.
+   forgetstd:  \delta_s in the equation (12) of the ISCAS 2019 paper.
+   bwidth:     Band width of the Gaussian model.
+and same values are used for every coefficients of the adaptive filter.
+
+The Gaussian model and its update are implemented in the class file VGSM.m which is
+independent of the adaptive algorithm used.
+
+GSNLMS.m contins
+
+  initAlgorithm:
+    Automatically called at the beginning of the simulation.
+    Initializing the parameters of the algorithm.
+
+  update:
+    Update formula of the NLMS algorithm using the Gaussian model.
+
+t1.m is an example of the simulation using GSNLMS.
 
