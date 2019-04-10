@@ -1,6 +1,6 @@
 classdef LMS < AdaptiveFilter
     properties
-        stepsize = 0.1; % Normalized step size parameter
+        stepsize = 0.1; % step size parameter
     end
     methods
 

@@ -1,0 +1,41 @@
+1. Prepare a new class file for the algorithm
+   Make a new file with the filename 'CLASSNAME'.m where CLASSNAME
+   must match the class name. The class must a child class of the
+   class AdaptiveFilter.
+
+   The first line of LMS.m shows how to  define a new class 'LMS'
+   as a chile class of the 'AdaptiveFilter'.
+
+      classdef LMS < AdaptiveFilter
+
+   The classname, 'LMS' here, should be changed to the new classname.
+
+2. Parameters of the algorithms
+   The parameters of the algorithm are written in the 'properties'
+   section. LMS.m contains a parameter, 'stepsize' for the stepsize
+   parameter of the algorithm, and it's default value is set as 0.1.
+
+      properties
+        stepsize = 0.1; % step size parameter
+      end
+
+
+3. Methods implementation
+   Main part of the Algorithm will be implemented as method.
+   LMS.m has two methods, setStepsize() and update(). setStepsize()
+   is the setter method for the parameter. The method update()
+   overrides update() of the parent class AdaptiveFilter.
+
+   We implement the formula of the adaptivie filter in the method update().
+   It has three augement variables, i.e., 'n', 'e', and 'input', where 'n'
+   indicates the time variable n, 'e' the error signal at time n, and
+   'input' the input vector at time n. The augument 'obj' points to the
+   object itself. The filter coefficient vector is stored in the object
+   as the field variable, and it can be indicated as 'obj.Coefficients'
+   which is defined in the class 'AdaptiveFilter' and is inherited.
+   Also, the stepsize can be accesed by 'obj.stepsize.'
+
+   The method will be called once at each time from the method 'simulation()'
+   of the class 'ADFsimulation.'
+
+
