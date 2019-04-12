@@ -18,3 +18,4 @@ How to execute simulations
      e.g., s.simulation()
      At the end of simulation, two figures are popuped, MSE, and MSD characteristics.
 
+*** s1.m is a simplest example of the steps above.
