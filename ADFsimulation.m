@@ -8,9 +8,18 @@ classdef ADFsimulation < handle
         algoNames;
         legendPosition = 'north';
         % saveData;
-        adfGraph;
-        gnum = 0;                   % number of graph
-        inputSignal;
+            adfGraph;
+            gnum = 0;                   % number of graph
+            inputSignal;
+        fontsizeAxes = 14;
+        fontsizeText = 14;
+        fontsizeLabel = 16;
+        lineWidth = 4;
+
+        errs;
+        msds;
+
+        plotResults;
     end
     methods
         % Constructor
@@ -20,6 +29,7 @@ classdef ADFsimulation < handle
                     str1 = varargin{i}{1};
                     if strncmp(str1, 'algo', 4)
                         algos = varargin{i};
+                        algs = varargin{i};
                         na = length(algos);
                         for j = 1:na-1
                             obj.algorithm{j} = algos{j+1};
@@ -28,12 +38,15 @@ classdef ADFsimulation < handle
                     elseif strncmp(str1, 'dlen', 4)
                         obj.avenum = varargin{i}{2};
                         obj.nmax = varargin{i}{3};
+                        lens = varargin{i};
                     elseif strncmp(str1, 'graph', 4)
                         obj.gnum = length(varargin{i});
                         obj.adfGraph = varargin{i}{2};
                     end
                 end
             end
+            obj.plotResults = ADFplotResults(algs, lens);
+
             % obj.inputSignal = SystemInput();
         end
 
@@ -44,6 +57,22 @@ classdef ADFsimulation < handle
 
         function obj = setLegendPosition(obj, position)
             obj.legendPosition = position;
+        end
+
+        function obj = setFontsizeAxes(obj, size)
+            obj.fontsizeAxes = size;
+        end
+
+        function obj = setFontsizeText(obj, size)
+            obj.fontsizeText = size;
+        end
+
+        function obj = setFontsizeLabel(obj, size)
+            obj.fontsizeLabel = size;
+        end
+
+        function obj = setLineWidth(obj, width)
+            obj.lineWidth = width;
         end
 
         function obj = setUnknown(obj, unknown)
@@ -65,106 +94,6 @@ classdef ADFsimulation < handle
             unknown.setTime(0);
         end
 
-        function plotmseold(obj, err, color)
-            e2 = err .^2;
-            plot(10*log10(e2), color);
-        end
-
-        function handle = plotAverageMSE(obj, err, num, color)
-            e2 = 0;
-            for i = 1: num
-                ei = err(:,i);
-                e2 = e2 + ei.^2;
-            end
-            handle = plot(10*log10(e2/num), color);
-            set(handle, 'linewidth', 2);
-        end
-
-        function plotResults(obj, errs, en)
-            algonum = length(obj.algorithm);
-            %f = figure('visible', 'off');
-            figure();
-            hold off;
-            legends = 0;
-            set(0, 'defaultAxesFontSize', 14);
-            set(0, 'defaultTextFontSize', 14);
-            set(0, 'defaultAxesFontName', 'Helvetica');
-            set(0, 'defaultTextFontName', 'Helvetica');
-            % cline = ['b', 'r', 'g', 'k', 'c', 'y', 'm'];
-            cline = ['b', 'r', 'g', 'c', 'k', 'm', 'y'];
-            for j = 1 : algonum
-                merr = zeros(obj.nmax,obj.avenum);
-                merr(:, :) = errs(j, :, :);
-                handle = obj.plotAverageMSE(merr, en, cline(j));
-                if j == 1
-                    hm = [handle];
-                    legends = [cellstr(obj.algoNames{j})];
-                else
-                    hm = [hm, handle];
-                    legends = [legends; cellstr(obj.algoNames{j})];
-                end
-                hold on;
-            end
-            grid on
-            xlabel('Iteration n', 'FontSize', 16);
-            ylabel('Mean Square Error [dB]', 'FontSize', 16);
-            [tleg, objh, outh, outm] = legend(hm, legends, 'Location', obj.legendPosition);
-            legend boxoff;
-            set(objh, 'LineWidth', 4);
-        end
-
-        function handle = plotAverageMSD(obj, err, num, color)
-            e2 = 0;
-            for i = 1: num
-                ei = err(:,i);
-                e2 = e2 + ei;
-            end
-            handle = plot(10*log10(e2/num), color);
-            set(handle, 'linewidth', 2);
-        end
-
-        function plotMSDs(obj, msds, en)
-            algonum = length(obj.algorithm);
-            %f = figure('visible', 'off');
-            figure();
-            hold off;
-            legends = 0;
-            set(0, 'defaultAxesFontSize', 14);
-            set(0, 'defaultTextFontSize', 14);
-            set(0, 'defaultAxesFontName', 'Helvetica');
-            set(0, 'defaultTextFontName', 'Helvetica');
-            %cline = ['b', 'r', 'g', 'k', 'c', 'y', 'm'];
-            cline = ['b', 'r', 'g', 'c', 'k', 'm', 'y'];
-            for j = 1 : algonum
-                merr = zeros(obj.nmax,obj.avenum);
-                merr(:, :) = msds(j, :, :);
-                handle = obj.plotAverageMSD(merr, en, cline(j));
-                if j == 1
-                    hm = [handle];
-                    legends = [cellstr(obj.algoNames{j})];
-                else
-                    hm = [hm, handle];
-                    legends = [legends; cellstr(obj.algoNames{j})];
-                end
-                hold on;
-            end
-            grid on
-            xlabel('Iteration n', 'FontSize', 16);
-            ylabel(' MSD [dB]', 'FontSize', 16);
-            [tleg, objh, outh, outm] = legend(hm, legends, 'Location', obj.legendPosition);
-            legend boxoff;
-            set(objh, 'LineWidth', 4);
-        end
-
-        function outputEps(obj, name)
-            if nargin == 1
-                print -color -deps figoutput.eps
-            elseif nargin == 2
-                %print -color -deps name
-                print(gcf, "-color", "-deps", name);
-            end
-        end
-
         %%
         %% the main loop of simulation
         %%
@@ -176,6 +105,7 @@ classdef ADFsimulation < handle
             algonum = length(obj.algorithm)
             errs = zeros(algonum, nmax, avenum);
             msds = zeros(algonum, nmax, avenum); % mean squared deviation
+            nees = zeros(algonum, nmax, avenum); % normalized error error
             outputs = zeros(algonum, nmax, avenum);
 
             for en = 1: avenum
@@ -187,6 +117,7 @@ classdef ADFsimulation < handle
                         [outputs(a,i,en),errs(a,i,en)] = obj.algorithm{a}.iteration(input, output);
                         unk = unknown.getCoefficients();
                         [msds(a,i,en)] = obj.algorithm{a}.calcMSD(unk);
+                        [nees(a,i,en)] = obj.algorithm{a}.calcNEE(unk);
                     end
                 end
                 %obj.plotResults(errs, en);
@@ -194,8 +125,12 @@ classdef ADFsimulation < handle
                     obj.adfGraph.updateData(obj.algorithm);
                 end
             end
-            obj.plotResults(errs, avenum);
-            obj.plotMSDs(msds, avenum);
+            obj.errs = errs;
+            obj.msds = msds;
+            %obj.plotResults.plotMSEs(errs, avenum);
+            obj.plotResults.plotMSDs(msds, avenum);
+            %obj.plotResults.plotNEEs(nees, avenum);
+            obj.plotResults.plotDiffMSDs(msds, avenum);
             % print -color -deps figsim.eps
         end
     end
