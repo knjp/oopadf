@@ -55,7 +55,16 @@ classdef AdaptiveFilter < handle
             obj.InputVector = [input; obj.InputVector(1:obj.flen-1)];
             y = obj.InputVector' * obj.Coefficients;
             error = desire - y;
-            obj = obj.update(error, obj.InputVector);
+            obj.update(error, obj.InputVector);
+        end
+
+        function nee = calcNEE(obj, coef)
+            [uf1, w] = freqz(coef, 1, 1024);
+            ufamp = sum(abs(uf1.*uf1));
+            [u2, w] = freqz(obj.Coefficients, 1, 1024);
+            ufdiff = uf1 - u2;
+            uf2 = sum(abs(ufdiff.*ufdiff));
+            nee = uf2/ufamp;
         end
 
         function msd = calcMSD(obj, coef)
@@ -63,18 +72,18 @@ classdef AdaptiveFilter < handle
             msd = diff' * diff/(coef'*coef);
         end
 
-        function plotmse(obj, err, color)
-            e2 = err .^2;
-            plot(10*log10(e2), color);
-        end
-
-        function plotAverageMSE(obj, err, num, color)
-            e2 = 0;
-            for i = 1: num
-                ei = err(:,i);
-                e2 = e2 + ei.^2;
-            end
-            plot(10*log10(e2/num), color);
-        end
+%        function plotmse(obj, err, color)
+%            e2 = err .^2;
+%            plot(10*log10(e2), color);
+%        end
+%
+%        function plotAverageMSE(obj, err, num, color)
+%            e2 = 0;
+%            for i = 1: num
+%                ei = err(:,i);
+%                e2 = e2 + ei.^2;
+%            end
+%            plot(10*log10(e2/num), color);
+%        end
     end
 end

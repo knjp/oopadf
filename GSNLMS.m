@@ -29,7 +29,7 @@ classdef GSNLMS < AdaptiveFilter
             obj.forgetstd = forgetstd;
             obj.bwidth = bwidth;
             gnum = obj.gnum;
-            obj.vgmm = VGSM(hlen, gnum);
+            obj.vgmm = VGSM(hlen);
             obj.vgmm.setForgetmu(forgetmu);
             obj.vgmm.setForgetstd(forgetstd);
             obj.vgmm.setBandwidth(bwidth);
@@ -43,7 +43,7 @@ classdef GSNLMS < AdaptiveFilter
             initAlgorithm@AdaptiveFilter(obj);
             obj.buff_input = zeros(obj.flen, 300);
             obj.aven = 1;
-            obj.vgmm = VGSM(obj.flen, obj.gnum);
+            obj.vgmm = VGSM(obj.flen);
             obj.vgmm.setForgetmu(obj.forgetmu);
             obj.vgmm.setForgetstd(obj.forgetstd);
             obj.vgmm.setBandwidth(obj.bwidth);
