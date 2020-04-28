@@ -6,15 +6,15 @@ classdef ADFsimulation < handle
         algorithm;
         unknownSystem;
         algoNames;
-        legendPosition = 'north';
+        %legendPosition = 'north';
         % saveData;
             adfGraph;
             gnum = 0;                   % number of graph
             inputSignal;
-        fontsizeAxes = 14;
-        fontsizeText = 14;
-        fontsizeLabel = 16;
-        lineWidth = 4;
+        %fontsizeAxes = 14;
+        %fontsizeText = 14;
+        %fontsizeLabel = 16;
+        %lineWidth = 4;
 
         errs;
         msds;
@@ -56,23 +56,28 @@ classdef ADFsimulation < handle
         end
 
         function obj = setLegendPosition(obj, position)
-            obj.legendPosition = position;
+            % obj.legendPosition = position;
+            obj.plotResults.setLegendPosition(position);
         end
 
         function obj = setFontsizeAxes(obj, size)
-            obj.fontsizeAxes = size;
+            % obj.fontsizeAxes = size;
+            obj.plotResults.setFontsizeAxes(size);
         end
 
         function obj = setFontsizeText(obj, size)
-            obj.fontsizeText = size;
+            % obj.fontsizeText = size;
+            obj.plotResults.setFontsizeText(size);
         end
 
         function obj = setFontsizeLabel(obj, size)
-            obj.fontsizeLabel = size;
+            %obj.fontsizeLabel = size;
+            obj.plotResults.setFontsizeLabel(size);
         end
 
         function obj = setLineWidth(obj, width)
-            obj.lineWidth = width;
+            % obj.lineWidth = width;
+            obj.plotResults.setLineWidth(width);
         end
 
         function obj = setUnknown(obj, unknown)
@@ -127,11 +132,13 @@ classdef ADFsimulation < handle
             end
             obj.errs = errs;
             obj.msds = msds;
-            %obj.plotResults.plotMSEs(errs, avenum);
+            obj.plotResults.plotMSEs(errs, avenum);
             obj.plotResults.plotMSDs(msds, avenum);
-            %obj.plotResults.plotNEEs(nees, avenum);
+            obj.plotResults.plotNEEs(nees, avenum);
             obj.plotResults.plotDiffMSDs(msds, avenum);
             % print -color -deps figsim.eps
+            dataname = sprintf('saveData-%s', datestr(now, 'yyyymmdd-HHMMSS'));
+            save(dataname, 'errs', 'msds', 'nees' );
         end
     end
 end

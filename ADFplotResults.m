@@ -15,7 +15,7 @@ classdef ADFplotResults < handle
 		fontsizeText = 14;
 		fontsizeLabel = 16;
 		lineWidth = 4;
-
+        isOctave;
 		errs;
 		msds;
 	end
@@ -42,6 +42,7 @@ classdef ADFplotResults < handle
 					end
 				end
 			end
+            obj.isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 		end
 
 		function obj = setNumIteration(obj, avenum, nmax)
@@ -119,6 +120,12 @@ classdef ADFplotResults < handle
 			[tleg, objh, outh, outm] = legend(hm, legends, 'Location', obj.legendPosition);
 			legend boxoff;
 			set(objh, 'LineWidth', obj.lineWidth);
+
+            fname = sprintf('saveMSEs-%s.fig', datestr(now, 'yyyymmdd-HHMMSS'));
+            if (obj.isOctave)
+            else
+                savefig(fname);
+            end
 		end
 
 		function handle = plotAverageMSD(obj, err, num, color)
@@ -170,6 +177,12 @@ classdef ADFplotResults < handle
 			[tleg, objh, outh, outm] = legend(hm, legends, 'Location', obj.legendPosition);
 			legend boxoff;
 			set(objh, 'LineWidth', obj.lineWidth);
+
+            fname = sprintf('saveMSDs-%s.fig', datestr(now, 'yyyymmdd-HHMMSS'));
+            if (obj.isOctave)
+            else
+                savefig(fname);
+            end
 		end
 
 		function handle = plotAverageDiffMSD(obj, err, num, color)
@@ -219,6 +232,12 @@ classdef ADFplotResults < handle
 			[tleg, objh, outh, outm] = legend(hm, legends, 'Location', obj.legendPosition);
 			legend boxoff;
 			set(objh, 'LineWidth', obj.lineWidth);
+
+            fname = sprintf('saveDMSDs-%s.fig', datestr(now, 'yyyymmdd-HHMMSS'));
+            if (obj.isOctave)
+            else
+                savefig(fname);
+            end
 		end
 
 		function plotNEEs(obj, nees, en)
@@ -252,6 +271,12 @@ classdef ADFplotResults < handle
 			[tleg, objh, outh, outm] = legend(hm, legends, 'Location', obj.legendPosition);
 			legend boxoff;
 			set(objh, 'LineWidth', obj.lineWidth);
+
+            fname = sprintf('saveNEEs-%s.fig', datestr(now, 'yyyymmdd-HHMMSS'));
+            if (obj.isOctave)
+            else
+                savefig(fname);
+            end
 		end
 
 		function outputEps(obj, name)
